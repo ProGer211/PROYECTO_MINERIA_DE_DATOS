@@ -1,174 +1,180 @@
-#  Severity Classification of Migration Incidents
+# Clasificación de la Gravedad de Incidentes Migratorios
 
-##  Project Description
+## Descripción del Proyecto
 
-This project builds a complete Machine Learning pipeline to classify the severity of migration-related incidents using the **Global Missing Migrants Dataset**.
+Este proyecto desarrolla un pipeline completo de **Machine Learning** para clasificar la gravedad de incidentes relacionados con la migración utilizando el **Global Missing Migrants Dataset**.
 
-The goal is to predict the severity level of an incident (`Low`, `Medium`, `High`) based on geographical, temporal, and contextual features.
+El objetivo es predecir el nivel de gravedad de un incidente (`Baja`, `Media`, `Alta`) a partir de características geográficas, temporales y contextuales.
 
-The project includes:
+El proyecto incluye:
 
--  Data Understanding
--  Robust Data Cleaning
--  Target Variable Creation
--  Data Leakage Prevention
--  Stratified Train/Test Split
--  Training and comparison of multiple ML models
--  Advanced statistical evaluation
-
----
-
-##  Dataset
-
-The dataset contains historical information about migration incidents, including:
-
-- Number of deaths
-- Estimated number of missing persons
-- Region of incident
-- Year
-- Cause of death
-- Geographic coordinates
-
-Original target variable:
-
-Total Number of Dead and Missing
+* Comprensión de los datos
+* Limpieza robusta de los datos
+* Creación de la variable objetivo
+* Prevención de fuga de información (*Data Leakage*)
+* División estratificada de los datos en entrenamiento y prueba
+* Entrenamiento y comparación de múltiples modelos de Machine Learning
+* Evaluación estadística avanzada
 
 ---
 
-##  Target Variable Creation
+## Dataset
 
-The problem is transformed into a multiclass classification task:
+El conjunto de datos contiene información histórica sobre incidentes relacionados con la migración, incluyendo:
 
-| Total Dead & Missing | Severity |
-|----------------------|----------|
-| 0 – 2                | Low      |
-| 3 – 10               | Medium   |
-| > 10                 | High     |
+* Número de fallecidos
+* Número estimado de personas desaparecidas
+* Región del incidente
+* Año
+* Causa del fallecimiento
+* Coordenadas geográficas
 
----
+**Variable objetivo original:**
 
-##  Data Cleaning
-
-Includes:
-
-- Duplicate removal
-- Safe numeric conversion
-- Negative value correction
-- Coordinate parsing and validation
-- Total reconstruction consistency checks
-- Removal of inconsistent records
+`Total Number of Dead and Missing`
 
 ---
 
-##  Leakage Removal
+## Creación de la Variable Objetivo
 
-The following columns are removed to prevent target leakage:
+El problema se transforma en una tarea de **clasificación multiclase**:
 
-- Total Number of Dead and Missing
-- Number of Dead
-- Minimum Estimated Number of Missing
-- Number of Survivors
-- Number of Females
-- Number of Males
-- Number of Children
+| Total de fallecidos y desaparecidos | Gravedad |
+| ----------------------------------- | -------- |
+| 0 – 2                               | Baja     |
+| 3 – 10                              | Media    |
+| > 10                                | Alta     |
 
 ---
 
-##  Train/Test Split
+## Limpieza de Datos
 
-- 80% Training
-- 20% Testing
-- Stratified by class
-- Academic validation of split strategy
+Incluye:
 
----
-
-## ⚙️ Preprocessing
-
-- Leakage-free imputation (median/mode from training set)
-- Cardinality reduction
-- Outlier treatment
-- OneHot Encoding
-- Feature scaling (for linear/distance models)
-- Feature selection (SelectKBest)
+* Eliminación de duplicados
+* Conversión segura de valores numéricos
+* Corrección de valores negativos
+* Procesamiento y validación de coordenadas
+* Comprobaciones de consistencia en la reconstrucción del total
+* Eliminación de registros inconsistentes
 
 ---
 
-##  Models Trained
+## Eliminación de Fuga de Información
 
-- Naive Bayes
-- KNN
-- SVM (Linear, Polynomial, RBF)
-- Decision Tree
-- Random Forest
-- Extra Trees
-- AdaBoost
-- Bagging
+Para evitar la fuga de información respecto a la variable objetivo, se eliminan las siguientes columnas:
 
-Hyperparameter tuning performed using GridSearchCV with:
-
-F1-weighted as optimization metric.
+* `Total Number of Dead and Missing`
+* `Number of Dead`
+* `Minimum Estimated Number of Missing`
+* `Number of Survivors`
+* `Number of Females`
+* `Number of Males`
+* `Number of Children`
 
 ---
 
-##  Final Results
+## División de los Datos en Entrenamiento y Prueba
 
-| Model          | Accuracy | F1-weighted |
-|---------------|----------|------------|
-| SVM           | 0.808    | 0.7848     |
-| Random Forest | 0.806    | 0.7900     |
-| Extra Trees   | 0.792    | 0.7827     |
-| AdaBoost      | 0.801    | 0.7632     |
-| Decision Tree | 0.767    | 0.7667     |
-| KNN           | 0.727    | 0.7520     |
-| Naive Bayes   | 0.583    | 0.6426     |
-
-Random Forest and SVM show the most stable and competitive performance.
+* **80 %** para entrenamiento
+* **20 %** para prueba
+* División estratificada por clase
+* Validación de la estrategia de división desde un punto de vista académico
 
 ---
 
-##  Statistical Evaluation
+## ⚙️ Preprocesamiento
 
-- McNemar Test (model comparison)
-- 95% Confidence Intervals (Wilson)
-- Bootstrap confidence intervals for F1
-- Precision–Recall Curves
-- Confusion matrices comparison
-
----
-
-## Technologies Used
-
-- Python
-- Pandas
-- NumPy
-- Scikit-learn
-- Imbalanced-learn
-- Seaborn
-- Matplotlib
-- Statsmodels
+* Imputación sin fuga de información (mediana/moda calculada a partir del conjunto de entrenamiento)
+* Reducción de cardinalidad
+* Tratamiento de valores atípicos
+* Codificación One-Hot
+* Escalado de características (para modelos lineales y basados en distancia)
+* Selección de características mediante `SelectKBest`
 
 ---
 
-## ▶ How to Run
+## Modelos Entrenados
 
-Install dependencies:
+Se entrenaron y compararon los siguientes modelos:
 
+* Naive Bayes
+* KNN
+* SVM (Lineal, Polinomial y RBF)
+* Árbol de Decisión
+* Random Forest
+* Extra Trees
+* AdaBoost
+* Bagging
+
+Se realizó un ajuste de hiperparámetros mediante `GridSearchCV`, utilizando **F1 ponderado (*F1-weighted*)** como métrica de optimización.
+
+---
+
+## Resultados Finales
+
+| Modelo        | Accuracy | F1 ponderado |
+| ------------- | -------- | ------------ |
+| SVM           | 0.808    | 0.7848       |
+| Random Forest | 0.806    | 0.7900       |
+| Extra Trees   | 0.792    | 0.7827       |
+| AdaBoost      | 0.801    | 0.7632       |
+| Decision Tree | 0.767    | 0.7667       |
+| KNN           | 0.727    | 0.7520       |
+| Naive Bayes   | 0.583    | 0.6426       |
+
+**Random Forest y SVM muestran un rendimiento estable y competitivo.**
+
+---
+
+## Evaluación Estadística
+
+* Test de McNemar (comparación entre modelos)
+* Intervalos de confianza del 95 % (Wilson)
+* Intervalos de confianza mediante Bootstrap para F1
+* Curvas Precision-Recall
+* Comparación de matrices de confusión
+
+---
+
+## Tecnologías Utilizadas
+
+* Python
+* Pandas
+* NumPy
+* Scikit-learn
+* Imbalanced-learn
+* Seaborn
+* Matplotlib
+* Statsmodels
+
+---
+
+## ▶️ Cómo Ejecutar el Proyecto
+
+### 1. Instalar las dependencias
+
+```bash
 pip install -r requirements.txt
+```
 
-Run the notebook:
+### 2. Ejecutar el notebook
 
+Abre y ejecuta:
+
+```text
 PRACTICA_JESIKA_JIMENEZ_GERARD_CHAPARRO.ipynb
+```
 
 ---
 
-##  Authors
+## Autores
 
-- Jesika Jiménez  
-- Gerard Chaparro  
+* **Jesika Jiménez**
+* **Gerard Chaparro**
 
 ---
 
-##  Project Status
+## Estado del Proyecto
 
-Complete project with statistical validation and robust model comparison.
+Proyecto completo con validación estadística y comparación robusta de diferentes modelos de Machine Learning.
